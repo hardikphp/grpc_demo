@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+service UserService {
+    rpc GetAllUser (Empty) returns (UserList) {}
+    rpc Insert (User) returns (User) {}
+    rpc UpdateUser (User) returns (User) {}
+    rpc CreateRegion (Region) returns (Region) {}
+    rpc GetAllRegion (Empty) returns (RegionList) {}
+    rpc CreateTodo (Todo) returns (Todo) {}
+    rpc GetAllTodo (Empty) returns (TodoList) {}
+}
+
+message Empty {}
+
+message User {
+    string name = 1;
+    string email = 2;
+    string cell = 3;
+    string region = 4;
+    string regionName = 5;
+}
+
+message UserList {
+    repeated User users = 1;
+}
+
+message UserRequestId {
+    string id = 1;
+}
+
+message Region {
+    string name = 1;
+    string desc = 2;
+}
+
+message RegionList {
+    repeated Region regions = 1;
+}
+
+message Todo {
+    string task = 1;
+    string desc = 2;
+    string assignedTo = 3;
+    string addedBy = 4;
+    string regionName = 5;
+    bool isCompleted = 6;
+}
+
+message TodoList {
+    repeated Todo todos = 1;
+}

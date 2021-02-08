@@ -1,0 +1,39 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm run build && npm run dev",
+    "dev": "nodemon --exec babel-node server.js",
+    "build": "babel src --out-dir dist",
+    "serve": "npm run build && node dist/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.10.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/register": "^7.11.5",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.6",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "grpc": "^1.24.4",
+    "helmet": "^4.4.1",
+    "logger": "^0.0.1",
+    "mongo-tenant": "^1.8.0",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.12",
+    "morgan": "^1.10.0",
+    "serve-index": "^1.9.1",
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
+  }
+}
