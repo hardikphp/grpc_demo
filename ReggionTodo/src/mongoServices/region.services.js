@@ -18,6 +18,7 @@ const findRegion = async () => {
     { isActive: true, isDeleted: false },
     { name: 1, desc: 1 }
   );
+  console.log('Service data', data)
   return data;
 };
 

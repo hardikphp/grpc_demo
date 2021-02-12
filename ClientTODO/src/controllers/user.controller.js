@@ -1,24 +1,27 @@
 import { errorLogger } from "../utils";
-import { userService } from "../mongoServices";
-import { crud } from "../crudService";
-import { userModel } from "../models";
+// import { userService } from "../mongoServices";
+// import { crud } from "../crudService";
+// import { userModel } from "../models";
 const ObjectID = require("mongodb").ObjectID;
-const client = require("../../client");
+// const client = require("../../client");
+import { client1 } from "../../client";
 
 const addUser = async (req, res) => {
-  let db = await crud.dbCreate();
+  // let db = await crud.dbCreate();
   try {
     let { body } = req,
       data = null;
-    client.insert(body, async (err, saveuser) => {
+    client1.insert(body, async (err, saveuser) => {
+      console.log("User Calling");
       if (err) throw err;
-      let dbconnect = await crud.dbConnect(db, saveuser.regionName);
-      data = await dbconnect.collection("User").insertOne(saveuser);
-      data &&
-        res.status(200).send({
-          success: true,
-          message: "User Added SuccessFully",
-        });
+      console.log("saveuser", saveuser);
+      // let dbconnect = await crud.dbConnect(db, saveuser.regionName);
+      // data = await dbconnect.collection("User").insertOne(saveuser);
+      // data &&
+      res.status(200).send({
+        success: true,
+        message: "User Added SuccessFully",
+      });
     });
   } catch (error) {
     errorLogger(error.message, req.originalUrl);
@@ -57,14 +60,22 @@ const updateUser = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  let db = await crud.dbCreate();
+  console.log("client GetUser Calling");
+  // let db = await crud.dbCreate();
   try {
-    let { query } = req,
-      { regionName } = query;
+    let { body } = req;
+    console.log('body', body)
+    // { regionName } = query;
 
-    client.GetAllUser(null, async (err, data) => {
+    client1.GetAllUser(body, async (err, data) => {
+      console.log("Get User Calling");
       if (err) throw err;
-      let dbconnect = await crud.dbConnect(db, regionName);
+      console.log("data", data);
+      res.status(200).send({
+        success: true,
+        message: data.users,
+      });
+      /*let dbconnect = await crud.dbConnect(db, regionName);
       let findData = dbconnect.collection("User");
       findData
         .find({})
@@ -84,7 +95,7 @@ const getUser = async (req, res) => {
             message: error.message,
           });
           db.close();
-        });
+        });*/
     });
   } catch (error) {
     res.status(400).send({

@@ -1,0 +1,2 @@
+{"message":"client.insert is not a function","currentTime":"2/12/2021, 12:56:12 PM","requestURL":"/api/v1/users/addUser","level":"error"}
+{"message":"client1 is not defined","currentTime":"2/12/2021, 12:56:47 PM","requestURL":"/api/v1/users/addUser","level":"error"}

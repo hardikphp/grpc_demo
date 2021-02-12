@@ -1,24 +1,23 @@
 import { set, connect, connection, createConnection, Schema } from "mongoose";
-import { regionService } from "../mongoServices";
-import { crud } from "../crudService";
-import client from "../../client";
+import { client, client1 } from "../../client";
 
 const addRegion = async (req, res) => {
-  console.log("addRegion 30043 Todo 2")
-  let db = await crud.dbCreate();
+  // let db = await crud.dbCreate();
   try {
     let { body } = req,
       data = null,
       regionData = null;
     client.CreateRegion(body, async (err, saveRegion) => {
+      console.log("Calling client");
       if (err) throw err;
-      regionData = await crud.dbConnect(db, saveRegion.name);
-      data = await regionService.insertOne(saveRegion);
-      data &&
-        res.status(200).send({
-          success: true,
-          message: "Region Add SuccessFully",
-        });
+      console.log(saveRegion);
+      // regionData = await crud.dbConnect(db, saveRegion.name);
+      // data = await regionService.insertOne(saveRegion);
+      // data &&
+      res.status(200).send({
+        success: true,
+        message: "Region Add SuccessFully",
+      });
     });
   } catch (error) {
     res.status(400).send({
@@ -29,36 +28,17 @@ const addRegion = async (req, res) => {
   // await crud.dbClose(db);
 };
 
-const updateRegion = async (req, res) => {
-  try {
-    let { query, body } = req,
-      { id } = query,
-      data = null;
-
-    data = await regionService.updateRegion(id, body);
-    data &&
-      res.status(200).send({
-        success: true,
-        message: "Region Update SuccessFully",
-      });
-  } catch (error) {
-    res.status(400).send({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
 const getRegion = async (req, res) => {
-  console.log("getRegion 3043 Todo Folder")
   try {
-    client.GetAllRegion(null, async (err) => {
+    client.GetAllRegion(null, (err, data) => {
+      console.log("Calling client1");
       if (err) throw err;
-      let data = await regionService.findRegion();
-      data &&
+      console.log("data", data.regions);
+      // let data = await regionService.findRegion();
+      // data &&
         res.status(200).send({
           success: true,
-          data,
+          regions:data.regions,
         });
     });
   } catch (error) {
@@ -92,6 +72,5 @@ const getRegion = async (req, res) => {
 
 export default {
   addRegion,
-  updateRegion,
   getRegion,
 };

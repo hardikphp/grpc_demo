@@ -1,4 +1,6 @@
+import { crud } from "./src/crudService";
 const PROTO_PATH = "users.proto";
+//const REGION_PROTO_PATH = "/home/jay/Documents/TODO/region.proto";
 
 var grpc = require("grpc");
 var protoLoader = require("@grpc/proto-loader");
@@ -17,12 +19,16 @@ const usersProto = grpc.loadPackageDefinition(packageDefinition);
 const server = new grpc.Server();
 
 server.addService(usersProto.UserService.service, {
-  insert: (call, callback) => {
+  insert: async (call, callback) => {
+    console.log("create USer");
     let user = call.request;
-    callback(null, user);
+    let db = await crud.dbCreate();
+    let dbconnect = await crud.dbConnect(db, user.regionName);
+    let data = await dbconnect.collection("User").insertOne(user);
+
+    callback(null, data);
   },
   CreateRegion: (call, callback) => {
-    console.log("CreateRegion Todo")
     let region = call.request;
     callback(null, region);
   },
@@ -30,17 +36,28 @@ server.addService(usersProto.UserService.service, {
     let Todo = call.request;
     callback(null, Todo);
   },
-  GetAllUser: (_, callback) => {
-    console.log('CreateRegion Todo')
-
-    callback(null, {});
+  GetAllUser: async (call, callback) => {
+    let getUser = call.request;
+    let db = await crud.dbCreate();
+    let dbconnect = await crud.dbConnect(db, getUser.regionName);
+    let findData = dbconnect.collection("User");
+    findData
+      .find({})
+      .toArray()
+      .then(function (result) {
+        if (!result || result.length <= 0) throw new Error("No data found");
+        callback(null, { users: result });
+        db.close();
+      })
+      .catch(function (error) {
+        db.close();
+      });
   },
   UpdateUser: (call, callback) => {
     let updateUser = call.request;
     callback(null, updateUser);
   },
   GetAllRegion: (_, callback) => {
-    console.log('CreateRegion GetAllRegion Todo')
     callback(null, {});
   },
   GetAllTodo: (_, callback) => {

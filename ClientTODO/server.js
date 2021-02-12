@@ -7,7 +7,7 @@ import helmet from "helmet";
 import serveIndex from "serve-index";
 import { INTERNAL_LINKS } from "./src/enum";
 const server = express();
-require("./myserver");
+//require("./myserver");
 
 // DB connection
 require("./src/config/db.config");
@@ -45,12 +45,15 @@ server.use(
   serveIndex(FILE_PATH, { icons: true })
 );
 
-// import { userRoute } from "./src/routes";
+import { regionRoute, userRoute, todoRoute, reminderRoute } from "./src/routes";
 
-// server.use(INTERNAL_LINKS.USER.BASE_URL, userRoute);
+server.use(INTERNAL_LINKS.REGION.BASE_URL, regionRoute);
+server.use(INTERNAL_LINKS.USER.BASE_URL, userRoute);
+server.use(INTERNAL_LINKS.TODO.BASE_URL, todoRoute);
+server.use(INTERNAL_LINKS.REMINDER.BASE_URL, reminderRoute);
 
 server.get(INTERNAL_LINKS.BASE_API_URL, (req, res) => {
-  res.json({ message: "CHOREONATION REST-API" });
+  res.json({ message: "GRPC REST-API" });
 });
 server.get("/health", (_, res) => {
   res.status(200).send("I'm OK");

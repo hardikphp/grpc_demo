@@ -45,9 +45,9 @@ server.use(
   serveIndex(FILE_PATH, { icons: true })
 );
 
-import { regionRoute } from "./src/routes";
+// import { regionRoute } from "./src/routes";
 
-server.use(INTERNAL_LINKS.REGION.BASE_URL, regionRoute);
+// server.use(INTERNAL_LINKS.REGION.BASE_URL, regionRoute);
 
 server.get(INTERNAL_LINKS.BASE_API_URL, (req, res) => {
   res.json({ message: "GRPC REST-API" });

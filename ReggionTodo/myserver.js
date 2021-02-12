@@ -1,3 +1,5 @@
+import { crud } from "./src/crudService";
+import { regionService } from "./src/mongoServices";
 const PROTO_PATH = "users.proto";
 
 var grpc = require("grpc");
@@ -17,22 +19,26 @@ const usersProto = grpc.loadPackageDefinition(packageDefinition);
 const server = new grpc.Server();
 
 server.addService(usersProto.UserService.service, {
-  insert: (call, callback) => {
+  insert: async (call, callback) => {
     let user = call.request;
+
     callback(null, user);
   },
-  CreateRegion: (call, callback) => {
-    console.log('CreateRegion Todo2')
+  CreateRegion: async (call, callback) => {
+    console.log("CreateRegion Todo2");
 
     let region = call.request;
-    callback(null, region);
+    let db = await crud.dbCreate();
+    let regionData = await crud.dbConnect(db, region.name);
+    let data = await regionService.insertOne(region);
+    callback(null, data);
   },
   CreateTodo: (call, callback) => {
     let Todo = call.request;
     callback(null, Todo);
   },
   GetAllUser: (_, callback) => {
-    console.log('GetAllUser Todo2')
+    console.log("GetAllUser Todo2");
 
     callback(null, {});
   },
@@ -40,8 +46,11 @@ server.addService(usersProto.UserService.service, {
     let updateUser = call.request;
     callback(null, updateUser);
   },
-  GetAllRegion: (_, callback) => {
-    callback(null, {});
+  GetAllRegion: async (_, callback) => {
+    console.log("getAll Region Is Calling");
+    let data = await regionService.findRegion();
+    console.log("data", data);
+    callback(null, { regions: data });
   },
   GetAllTodo: (_, callback) => {
     callback(null, {});

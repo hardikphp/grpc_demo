@@ -29,4 +29,4 @@ const client1 = new UserService(
   grpc1.credentials.createInsecure()
 );*/
 
-module.exports = { client, client1 };
+module.exports = { client,client1 };
